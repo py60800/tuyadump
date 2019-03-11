@@ -2,16 +2,18 @@
 
 Tool to dump communication with tuya devices
 
-# warning
+# Warning
 
-This tool is the result of quick and dirty coding. I found it useful for debugging tuya communication.
+This tool has been developped while coding a GO API to control Tuya devices (Available here)[https://github.com/py60800/tuya].
+
+Despite being the result of quick and dirty coding, I found it great for debugging tuya communication.
 
 As of now, only version "3.1" protocol is supported
 
-# prerequisites
-Get the keys and ids of the tuya devices : (See code the web)[https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md]
+# Prerequisites
+Get the keys and ids of the tuya devices : (https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md)[https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md]
 
-# acknowledgements
+# Acknowledgements
 
 @codetheweb for reverse engineering tuya protocol
 
@@ -40,7 +42,7 @@ Build:
 Create a config file with the keys and id collected from tuya device (check example config for format)
 
 To view traffic in real time
-`sudo tuyadump port 6668 -C tuyaconfig.json`
+`sudo tuyadump  -C tuyaconfig.json`port 6668
 
 To view trafic collected with tcpdump:
 `tuyadump -C tuyaconfig.json -r dump.pcap`
