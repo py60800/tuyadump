@@ -141,7 +141,7 @@ func processBuffer(m []byte, IpSrc string, IpDst string) {
 		if hdr == uint(0x55aa) && len(m) >= 16+8 {
 			cmd := int(uiRd(m[8:]))
 			sz := int(uiRd(m[12:]))
-			if (sz + 16) >= len(m) {
+			if (sz + 16) <= len(m) {
 				processPayload(m[16:16+sz-8], cmd, Key)
 				m = m[16+sz:]
 				if len(m) > 0 {
