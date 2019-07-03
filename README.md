@@ -11,7 +11,7 @@ Despite being the result of quick and dirty coding, I found it great for debuggi
 As of now, only version "3.1" protocol is supported
 
 # Prerequisites
-Get the keys and ids of the tuya devices : (https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md)[https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md]
+Get the keys and ids of the tuya devices : [https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md)
 
 # Acknowledgements
 
