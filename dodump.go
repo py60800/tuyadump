@@ -16,8 +16,8 @@ import (
 	"github.com/google/gopacket"
 	//	"github.com/google/gopacket/ip4defrag"
 	"github.com/google/gopacket/layers" // pulls in all layers decoders
-	//        "encoding/hex"
-        "time"
+	//	"encoding/hex"
+	"time"
 )
 
 var (
@@ -61,32 +61,32 @@ func Run(src gopacket.PacketDataSource) {
 	source.NoCopy = true
 	source.DecodeStreamsAsDatagrams = true
 	fmt.Fprintln(os.Stderr, "Starting to read packets")
-        var initialTime time.Time
-        var prevTime time.Time
-        firstLoop := true
+	var initialTime time.Time
+	var prevTime time.Time
+	firstLoop := true
 	for packet := range source.Packets() {
 		var ip *layers.IPv4
 		if ipLayer := packet.Layer(layers.LayerTypeIPv4); ipLayer != nil {
 			ip, _ = ipLayer.(*layers.IPv4)
 		}
-                currTime := packet.Metadata().Timestamp
-                if firstLoop {
-                     initialTime = currTime
-                     prevTime = currTime
-                     firstLoop = false
-                }
+		currTime := packet.Metadata().Timestamp
+		if firstLoop {
+			initialTime = currTime
+			prevTime = currTime
+			firstLoop = false
+		}
 		if tcpLayer := packet.Layer(layers.LayerTypeTCP); tcpLayer != nil {
 			// Get actual TCP data from this layer
 			tcp, _ := tcpLayer.(*layers.TCP)
 			fmt.Printf("%v[%3.3f/%3.3f] %v:%d => %v:%d [%v] %v bytes\n",
 				getPfx(ip.SrcIP.String()),
-                                currTime.Sub(initialTime).Seconds(), currTime.Sub(prevTime).Seconds(),
+				currTime.Sub(initialTime).Seconds(), currTime.Sub(prevTime).Seconds(),
 				getDevName(ip.SrcIP.String()), tcp.SrcPort, getDevName(ip.DstIP.String()),
 				tcp.DstPort, typ(tcp), len(tcp.Payload))
 			if len(tcp.Payload) > 0 {
 				processBuffer(tcp.Payload, ip.SrcIP.String(), ip.DstIP.String())
 			}
 		}
-                prevTime = currTime
+		prevTime = currTime
 	}
 }
