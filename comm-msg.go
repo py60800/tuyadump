@@ -134,7 +134,7 @@ func processBuffer(m []byte, IpSrc string, IpDst string) {
 			fmt.Println("\tEmpty packet")
 		}
 		if len(m) < (16 + 8) {
-			Dump("Partial packet (garbage)?", m)
+			//Dump("Partial packet (garbage)?", m)
 			break
 		}
 		hdr := uiRd(m)
@@ -150,11 +150,11 @@ func processBuffer(m []byte, IpSrc string, IpDst string) {
 					break
 				}
 			} else {
-				Dump(fmt.Sprintf("Incomplete packet<%v/%v>", sz, len(m)), m)
+				//Dump(fmt.Sprintf("Incomplete packet<%v/%v>", sz, len(m)), m)
 				break
 			}
 		} else {
-			Dump("Corrupted packet ?", m)
+			//Dump("Corrupted packet ?", m)
 			break
 		}
 	}
