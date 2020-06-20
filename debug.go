@@ -5,30 +5,30 @@ import (
 	"unicode"
 )
 
-func _dump(i int, b []byte) {
-	fmt.Printf("%06d:", i)
+func _dump(i int, b []byte) string {
+	r := fmt.Sprintf("%06d:", i)
 	var j int
 	for j = 0; j < len(b); j++ {
 		if j%2 == 0 {
-			fmt.Print(" ")
+			r = r + " "
 		}
-		fmt.Printf("%02x", b[j])
+		r = r + fmt.Sprintf("%02x", b[j])
 	}
 	for ; j < 16; j++ {
 		if j%2 == 0 {
-			fmt.Print(" ")
+			r = r + " "
 		}
-		fmt.Printf("  ")
+		r = r + "  "
 	}
-	fmt.Print("  ")
+	r = r + "   "
 	for _, v := range b {
 		if unicode.IsPrint(rune(v)) {
-			fmt.Print(string(v))
+			r = r + string(v)
 		} else {
-			fmt.Print(".")
+			r = r + "."
 		}
 	}
-	fmt.Println()
+	return r
 }
 func Dump(what string, b []byte) {
 	fmt.Println("-->", what)
@@ -40,6 +40,25 @@ func Dump(what string, b []byte) {
 		if m > len(b) {
 			m = len(b)
 		}
-		_dump(i, b[i:m])
+		fmt.Println(_dump(i, b[i:m]))
+	}
+}
+func SDump(b []byte) string {
+	r := ""
+	for i := 0; ; i = i + 16 {
+		if i >= len(b) {
+			break
+		}
+		m := i + 16
+		if m > len(b) {
+			m = len(b)
+		}
+		r = r + _dump(i, b[i:m]) + "\n"
+	}
+	return r
+}
+func DDump(what string, b []byte) {
+	if *debugMode {
+		Dump(what, b)
 	}
 }

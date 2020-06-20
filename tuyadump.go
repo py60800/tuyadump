@@ -28,6 +28,7 @@ var fname = flag.String("r", "", "Filename to read from, overrides -i")
 var snaplen = flag.Int("s", 65536, "Snap length (number of bytes max to read per packet")
 var tstype = flag.String("timestamp_type", "", "Type of timestamps to use")
 var promisc = flag.Bool("promisc", true, "Set promiscuous mode")
+var debugMode = flag.Bool("d", false, "Debug mode")
 var tuyaconf = flag.String("C","", "Configuration file (with keys)")
 
 

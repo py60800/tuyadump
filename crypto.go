@@ -44,20 +44,16 @@ func aesEncrypt(data []byte, key []byte) ([]byte, error) {
    return []byte(base64.StdEncoding.EncodeToString(ciphertext)), nil
 }
 
-func aesDecrypt(data []byte, key []byte) ([]byte, error) {
-   n := base64.StdEncoding.DecodedLen(len(data))
-   ciphertext := make([]byte, n)
-   nc, er1 := base64.StdEncoding.Decode(ciphertext, data)
-   if er1 != nil {
-      return []byte{}, er1
-   }
-   ciphertext = ciphertext[:nc]
+func aesDecrypt33(ciphertext []byte, key []byte) ([]byte, error) {
+   DDump("Decrypt", ciphertext)
+   nc := len(ciphertext)
+   if nc == 0 { return []byte{}, nil }
    block, er2 := aes.NewCipher([]byte(key))
    if er2 != nil {
       return []byte{}, er2
    }
    bs := block.BlockSize()
-   if nc%bs != 0 && nc < 16 {
+   if (nc % bs) != 0 && nc < 16 {
       return []byte{}, errors.New("Bad ciphertext len")
    }
    cleartext := make([]byte, nc)
@@ -70,4 +66,13 @@ func aesDecrypt(data []byte, key []byte) ([]byte, error) {
       return []byte{}, errors.New("Bad padding")
    }
    return cleartext[:nc-p], nil
+}
+func aesDecrypt31(data []byte, key []byte) ([]byte, error) {
+   n := base64.StdEncoding.DecodedLen(len(data))
+   ciphertext := make([]byte, n)
+   nc, er1 := base64.StdEncoding.Decode(ciphertext, data)
+   if er1 != nil {
+      return []byte{}, er1
+   }
+   return aesDecrypt33(ciphertext[:nc],key)
 }
