@@ -8,7 +8,7 @@ This tool has been developped while coding a GO API to control Tuya devices (Ava
 
 Despite being the result of quick and dirty coding, I found it great for debugging tuya communication.
 
-Thanks to Erik Montnemery, tuyadump now supports 3.3 protocol.
+Thanks to Erik Montnemery (@emontnemery), tuyadump now supports 3.3 protocol.
 
 # Prerequisites
 Get the keys and ids of the tuya devices : [https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md)
@@ -18,6 +18,8 @@ Get the keys and ids of the tuya devices : [https://github.com/codetheweb/tuyapi
 @codetheweb for reverse engineering tuya protocol
 
 @google team for providing gopacket libraries
+
+@emontnemery for providing clues and examples to support 3.3 protocol
 
 and many others...
 
