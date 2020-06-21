@@ -8,7 +8,7 @@ This tool has been developped while coding a GO API to control Tuya devices (Ava
 
 Despite being the result of quick and dirty coding, I found it great for debugging tuya communication.
 
-As of now, only version "3.1" protocol is supported
+Thanks to Erik Montnemery, tuyadump now supports 3.3 protocol.
 
 # Prerequisites
 Get the keys and ids of the tuya devices : [https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md)
@@ -35,7 +35,7 @@ Get this library
 
 Build:
 
-`go build tuyadump.go comm-msg.go  crypto.go  dodump.go`
+`go build tuyadump.go comm-msg.go  crypto.go  dodump.go`debug.go
 
 # Run
 
@@ -46,4 +46,6 @@ To view traffic in real time
 
 To view trafic collected with tcpdump:
 `tuyadump -C tuyaconfig.json -r dump.pcap`
+
+-d option can be used to dump packets as hex data
 
