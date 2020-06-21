@@ -2,6 +2,7 @@
 "masterIP" : "192.168.1.33",
 "devices":[
 { "Name": "sw1", "IP": "192.168.1.31", "id": "1582850884f3eb30128e", "key": "XXXXXXXXXXX" },
-{ "Name": "sw2", "IP": "192.168.1.30", "id": "86273325cc50e3c8fe2d", "key": "XXXXXXXXXXX" }
+{ "Name": "sw2", "IP": "192.168.1.30", "id": "86273325cc50e3c8fe2d", "key": "XXXXXXXXXXX" },
+ { "Name": "sw3", "IP": "192.168.0.176", "id": "bfa031e42b90f0ac8bgrf8", "key": "XXXXXXXXXXXX", "Version": "3.3" }
  ]
 }
