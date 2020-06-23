@@ -8,7 +8,9 @@ This tool has been developped while coding a GO API to control Tuya devices (Ava
 
 Despite being the result of quick and dirty coding, I found it great for debugging tuya communication.
 
-As of now, only version "3.1" protocol is supported
+As of now, only version "3.1" protocol is supported 
+
+New : 3.3 protocol is supported but you have to select an alternate branch : "3.3-Support" (still experimental too).
 
 # Prerequisites
 Get the keys and ids of the tuya devices : [https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md)
@@ -35,7 +37,7 @@ Get this library
 
 Build:
 
-`go build tuyadump.go comm-msg.go  crypto.go  dodump.go`
+`go build tuyadump.go comm-msg.go  crypto.go  dodump.go`debug.go
 
 # Run
 
