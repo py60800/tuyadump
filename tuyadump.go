@@ -74,8 +74,8 @@ func main() {
 			log.Fatal("BPF filter error:", err)
 		}
 	}
-        if *tuyaconf != "" {
-            parseConfig(*tuyaconf)
-        }
+	if *tuyaconf != "" {
+		parseConfig(*tuyaconf)
+	}
 	Run(handle)
 }

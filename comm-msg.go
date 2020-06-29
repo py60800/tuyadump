@@ -13,9 +13,10 @@ import (
 )
 
 type devConfig struct {
-	IP   string
-	Name string
-	Key  string
+	IP      string
+	Name    string
+	Key     string
+	Version *string
 }
 type tconfig struct {
 	MasterIP string
@@ -56,7 +57,8 @@ func getPfx(Ip string) string {
 }
 
 var (
-	Version = "3.1"
+	Version_3_1 = "3.1"
+	Version_3_3 = "3.3"
 )
 
 // helpers
@@ -78,7 +80,7 @@ func uiRd(b []byte) uint {
 	return r
 }
 
-func processPayload(b []byte, cmd int, Key []byte) {
+func processPayload(b []byte, cmd int, Key []byte, version string) {
 	var i int
 	emark := "Clear text"
 	for i = 0; i < len(b) && b[i] == byte(0); i++ {
@@ -89,17 +91,21 @@ func processPayload(b []byte, cmd int, Key []byte) {
 		return
 	} // empty
 	var data []byte
-	if b[0] == byte('{') {
+	if b[0] == byte('{') && version == Version_3_1{
 		//  Message in clear text
 		data = b
 	} else {
-		encrypted := false
-		if len(b) > (len(Version) + 16) {
+		hasVersion := false
+		if len(b) > (len(version) + 16) {
 			// Check if message starts with version number
-			encrypted = true
-			for i, vb := range Version {
-				encrypted = encrypted && b[i] == byte(vb)
+			hasVersion = true
+			for i, vb := range version {
+				hasVersion = hasVersion && b[i] == byte(vb)
 			}
+		}
+		encrypted := true
+		if version == Version_3_1 && !hasVersion {
+			encrypted = false
 		}
 		if !encrypted {
 			fmt.Println("\tClear text", string(b))
@@ -108,7 +114,16 @@ func processPayload(b []byte, cmd int, Key []byte) {
 		emark = "Encrypted"
 		var err error
 		if len(Key) > 0 {
-			data, err = aesDecrypt(b[len(Version)+16:], Key) // ignore signature
+			if version == Version_3_1 {
+				// Should this be 12?
+				data, err = aesDecrypt(b[len(version)+16:], Key, version) // ignore signature
+			} else {
+				if hasVersion {
+					data, err = aesDecrypt(b[len(version)+12:], Key, version) // ignore signature
+				} else {
+					data, err = aesDecrypt(b[0:], Key, version)
+				}
+			}
 			if err != nil {
 				fmt.Println("\tDecrypt error:", err)
 				return
@@ -125,36 +140,48 @@ func processBuffer(m []byte, IpSrc string, IpDst string) {
 		IP = IpDst
 	}
 	Key := []byte{}
+	version := Version_3_1
 	dev, ok := devMap[IP]
 	if ok {
 		Key = []byte(dev.Key)
+		if dev.Version != nil {
+			version = *dev.Version
+		}
 	}
+
 	for {
 		if len(m) == 0 {
 			fmt.Println("\tEmpty packet")
 		}
 		if len(m) < (16 + 8) {
-			Dump("Partial packet (garbage)?", m)
+			//Dump("Partial packet (garbage)?", m)
 			break
 		}
 		hdr := uiRd(m)
 		if hdr == uint(0x55aa) && len(m) >= 16+8 {
 			cmd := int(uiRd(m[8:]))
 			sz := int(uiRd(m[12:]))
+			rc := int(uiRd(m[16:]))
+			hasReturnCode := (rc & 0xFFFFFF00) == 0
 			if (sz + 16) <= len(m) {
-				processPayload(m[16:16+sz-8], cmd, Key)
-				m = m[16+sz:]
+				if hasReturnCode {
+					processPayload(m[16+4:16+sz-8], cmd, Key, version)
+					m = m[16+sz:]
+				} else {
+					processPayload(m[16:16+sz-8], cmd, Key, version)
+					m = m[16+sz:]
+				}
 				if len(m) > 0 {
 					fmt.Println("----+++----")
 				} else {
 					break
 				}
 			} else {
-				Dump(fmt.Sprintf("Incomplete packet<%v/%v>", sz, len(m)), m)
+				//Dump(fmt.Sprintf("Incomplete packet<%v/%v>", sz, len(m)), m)
 				break
 			}
 		} else {
-			Dump("Corrupted packet ?", m)
+			//Dump("Corrupted packet ?", m)
 			break
 		}
 	}

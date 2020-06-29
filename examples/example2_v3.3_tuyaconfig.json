@@ -1,0 +1,6 @@
+{
+"masterIP" : "192.168.0.152",
+"devices":[
+{ "Name": "sw1", "IP": "192.168.0.176", "id": "bfa031e42b90f0ac8bgrf8", "key": "37fb32344f73b566", "Version": "3.3" }
+ ]
+}
