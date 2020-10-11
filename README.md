@@ -9,6 +9,7 @@ This tool has been developped while coding a GO API to control Tuya devices (Ava
 Despite being the result of quick and dirty coding, I found it great for debugging tuya communication.
 
 Thanks to Erik Montnemery (@emontnemery), tuyadump now supports 3.3 protocol.
+If you encounter any issue, you can try the previous version (branch master).
 
 # Prerequisites
 Get the keys and ids of the tuya devices : [https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md](https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md)
@@ -44,7 +45,7 @@ Build:
 Create a config file with the keys and id collected from tuya device (check example config for format)
 
 To view traffic in real time
-`sudo tuyadump  -C tuyaconfig.json`port 6668
+`sudo ./tuyadump  -C tuyaconfig.json`port 6668
 
 To view trafic collected with tcpdump:
 `tuyadump -C tuyaconfig.json -r dump.pcap`
